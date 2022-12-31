@@ -1,0 +1,22 @@
+server:
+  port: 8082
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3300/board?useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: test1234
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    show_sql: true
+    format_sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+#      배치잡 사용시 최초 실행의 경우 false로
+  batch:
+    job:
+      enabled: false
+
