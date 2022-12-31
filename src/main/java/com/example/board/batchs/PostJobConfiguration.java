@@ -18,31 +18,21 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 @Configuration // Spring Batch의 모든 Job은 @Configuration으로 등록해서 사용해야 한다.
 public class PostJobConfiguration {
-
-
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
-
     private final PostRepository repository;
-
-
-
-
-    @Bean
-    public Job simpleJob() {
-        return jobBuilderFactory.get("simpleJob")
-                .start(simpleStep1())
+    public Job excuteJob() {
+        return jobBuilderFactory.get("excuteJob")
+                .start(firstStep())
                 .build();
     }
-
     @Bean
-    public Step simpleStep1() {
-        return stepBuilderFactory.get("simpleStep1")
+    public Step firstStep() {
+        return stepBuilderFactory.get("firstStep")
                 .tasklet((contribution, chunkContext) -> {
                     log.info("Start");
                     String scheduled = "checked";
                     for (Post post : repository.findByScheduled(scheduled)) {
-//            1초 차이 용인
                         if(post.getScheduledTime().isBefore(LocalDateTime.now().plusSeconds(1))){
                             post.setScheduled(null);
                             repository.save(post);
@@ -52,17 +42,4 @@ public class PostJobConfiguration {
                 })
                 .build();
     }
-
-//    private final PostRepository repository;
-//    public void postSchedule(){
-//        //schedule걸린건만 조회
-//        String scheduled = "checked";
-//        for (Post post : repository.findByScheduled(scheduled)) {
-////            1초 차이 용인
-//            if(post.getScheduledTime().isBefore(LocalDateTime.now().plusSeconds(1))){
-//                post.setScheduled(null);
-//                repository.save(post);
-//            }
-//        }
-//    }
 }

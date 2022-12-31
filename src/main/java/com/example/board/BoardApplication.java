@@ -10,11 +10,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @SpringBootApplication
 public class BoardApplication {
-
 	public static void main(String[] args) {
-
 		SpringApplication.run(BoardApplication.class, args);
-
 	}
-
 }

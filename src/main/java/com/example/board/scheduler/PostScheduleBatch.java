@@ -19,15 +19,10 @@ import java.util.Map;
 @Slf4j
 @Component
 public class PostScheduleBatch {
-
-
     @Autowired
     private JobLauncher jobLauncher;
-
     @Autowired
     private PostJobConfiguration postJobConfiguration;
-
-
     private final PostRepository repository;
     public PostScheduleBatch(PostRepository repository) {
         this.repository = repository;
@@ -38,14 +33,10 @@ public class PostScheduleBatch {
         Map<String, JobParameter> confMap = new HashMap<>();
         confMap.put("time", new JobParameter(System.currentTimeMillis()));
         JobParameters jobParameters = new JobParameters(confMap);
-
         try {
-
-            jobLauncher.run(postJobConfiguration.simpleJob(), jobParameters);
-
+            jobLauncher.run(postJobConfiguration.excuteJob(), jobParameters);
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
                  | JobParametersInvalidException | org.springframework.batch.core.repository.JobRestartException e) {
-
             log.error(e.getMessage());
         }
     }
